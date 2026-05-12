@@ -15,9 +15,17 @@ public class Main {
     public static void main(String[] args) {
     // Scanner used to read user input from the terminal
     Scanner scanner = new Scanner(System.in);
+    
+    System.out.println("=================================");
+    System.out.println("   Department Store System");
+    System.out.println("=================================");
+    
+    // Stores the selected menu option
     MenuOptionEnum selectedOption = null;
     
+         // Keep showing the menu until the user selects a valid option
     while (selectedOption == null) {
+        // Loop through all enum options and display them
     for (MenuOptionEnum option : MenuOptionEnum.values()) {
         System.out.println(option.getOption() + ". " + option.getLabel());
 }
