@@ -11,15 +11,20 @@ package CA_2;
 public class Employee {
     
     // Basic employee details used by the system
+    private int employeeId;
     private String name;
     private String managerType;
     private String department;
     
     // Constructor used to create a new employee object
-    public Employee(String name, String managerType, String department) {
+    public Employee(int employeeId, String name, String managerType, String department) {
+        this.employeeId = employeeId;
         this.name = name;
         this.managerType = managerType;
         this.department = department;
+    }
+    public int getEmployeeId(){
+        return employeeId;
     }
     // Returns the employee name
     public String getName() {
@@ -35,11 +40,17 @@ public class Employee {
     public String getDepartment() {
         return department;
     }
-
-    // Displays employee details in a readable format
-    @Override
-    public String toString() {
-        return name + " | " + managerType + " | " + department;
- 
+    // Returns all employee information in one string
+    public String getDetails(){
+        return employeeId + " - " + name + " | " + managerType + " | " + department;
+    }
+    // Updates the employee department
+    public void updateDepartment(String newDepartment) {
+        this.department = newDepartment;
+    }
+    // Returns employee details when the object is printed
+   public String toString(){
+       return getDetails();
+   
     }
 }
