@@ -20,7 +20,7 @@ public class Main {
 
     System.out.println("=================================");
     System.out.println("   Department Store System");
-       System.out.println("=================================");
+    System.out.println("=================================");
 
      // Stores all employees read from the file
     ArrayList<Employee> employeeList = new ArrayList<>();
@@ -43,8 +43,7 @@ public class Main {
     // Check if the file was loaded correctly
     if (employeeList.isEmpty()) {
 
-    System.out.println(
-                        "File not found. Please try again.\n");
+    System.out.println( "File not found. Please try again.\n");
 
     } else {
 
@@ -65,9 +64,6 @@ public class Main {
          );
 }
 
-     // Ask the user to choose an option from the menu
-            System.out.print("\nSelect an option: ");
-
     int userChoice = scanner.nextInt();
 
     // Convert user choice into enum option
@@ -81,12 +77,12 @@ public class Main {
             }
         }
 
-        System.out.println(  "You selected: " + selectedOption.getLabel() );
+     System.out.println(  "You selected: " + selectedOption.getLabel() );
 
      // Execute the selected menu option
     switch (selectedOption) {
 
-        case SORT:
+    case SORT:
 
     // Create MergeSort object
         MergeSort mergeSort = new MergeSort();
@@ -102,8 +98,139 @@ public class Main {
         System.out.println( employeeList.get(i).getName());
  }
 
-    break;
-    }     
-    scanner.close();
+    case SEARCH:
+
+    // Sort list before searching because binary search needs sorted data
+    MergeSort searchSort = new MergeSort();
+    employeeList = searchSort.sort(employeeList);
+
+    // Clear scanner line before reading text
+    scanner.nextLine();
+
+    System.out.print("\nPlease enter employee name to search: ");
+    String searchName = scanner.nextLine();
+
+    BinarySearch binarySearch = new BinarySearch();
+
+    Employee foundEmployee =
+            binarySearch.search(
+            employeeList,
+            searchName,
+            0,
+            employeeList.size() - 1
+            );
+
+    if (foundEmployee == null) {
+
+        System.out.println("Employee not found.");
+
+    } else {
+
+        System.out.println("\nEmployee found:");
+        System.out.println("Name: " + foundEmployee.getName());
+        System.out.println("Manager Type: " + foundEmployee.getManagerType());
+        System.out.println("Department: " + foundEmployee.getDepartment());
+    }
+
+   
+    case ADD_EMPLOYEE:
+
+        // Clear scanner line
+        scanner.nextLine();
+
+        // Create InputValidator object
+        InputValidator validator =
+                new InputValidator();
+
+        // Ask for employee name
+        System.out.print(
+                "\nPlease enter employee name: "
+        );
+
+        String newName = scanner.nextLine();
+
+        // Validate employee name
+        while (!validator.isValidName(newName)) {
+
+            System.out.println(
+                    "Invalid name. Please try again."
+            );
+
+            newName = scanner.nextLine();
+        }
+
+        // Display manager options
+        System.out.println(
+                "\nPlease select from the following Management Staff:"
+        );
+
+        System.out.println("1. Head Manager");
+        System.out.println("2. Assistant Manager");
+        System.out.println("3. Team Lead");
+
+        int managerChoice = scanner.nextInt();
+
+        // Validate manager option
+        while (!validator.isValidManagerOption(managerChoice)) {
+
+            System.out.println(
+                    "Invalid option. Please try again."
+            );
+
+            managerChoice = scanner.nextInt();
+        }
+
+        // Display department options
+        System.out.println(
+                "\nPlease select the Department:"
+        );
+
+        System.out.println("1. Customer Service");
+        System.out.println("2. Foreign Exchange");
+        System.out.println("3. HR");
+
+        int departmentChoice = scanner.nextInt();
+
+        // Validate department option
+        while (!validator.isValidDepartmentOption(departmentChoice)) {
+
+            System.out.println(
+                    "Invalid option. Please try again."
+            );
+
+            departmentChoice = scanner.nextInt();
+        }
+
+        // Get manager type and department name
+        String managerType =
+                validator.getManagerType(managerChoice);
+
+        String department =
+                validator.getDepartment(departmentChoice);
+
+        // Create new employee object
+        Employee newEmployee = new Employee(
+                employeeList.size() + 1,
+                newName,
+                managerType,
+                department
+        );
+
+        // Add employee to the list
+        employeeList.add(newEmployee);
+
+        System.out.println(
+                "\n\"" + newName
+                + "\" has been added as \""
+                + managerType
+                + "\" to \""
+                + department
+                + "\" successfully!"
+        );
+
+        break;
+}
+
+scanner.close();
     }
 }
